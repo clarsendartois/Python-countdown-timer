@@ -88,3 +88,5 @@ Button(root, text='START', bd='5', command=countdown,
 
 
 root.mainloop()
+
+# 16:38
