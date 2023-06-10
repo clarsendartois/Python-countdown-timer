@@ -42,23 +42,6 @@ class CountdownTimer:
         self.frame_display_default = self.create_frame_display_default()
         self.label_default = self.create_label_default()
 
-        # self.empty = ''
-
-        # hrs = tk.StringVar()
-        # tk.Entry(self.main_frame, textvariable=hrs, width=2, font=font_style_timer,
-        #             foreground=timer_color, borderwidth=10).place(relx=0.5, rely=0.5, x=-550, y=120)
-        # hrs.set("00")
-
-        # mins = tk.StringVar()
-        # tk.Entry(self.main_frame, textvariable=mins, width=2, font=font_style_timer,
-        #          foreground=timer_color, borderwidth=10).place(relx=0.5, rely=0.5, x=-350, y=120)
-        # mins.set("00")
-
-        # sec = tk.StringVar()
-        # tk.Entry(self.main_frame, textvariable=sec, width=2, font=font_style_timer,
-        #          foreground=timer_color, borderwidth=10).place(relx=0.5, rely=0.5, x=-150, y=120)
-        # sec.set("00")
-
     def create_main_frame(self):
         main_frame = ctk.CTkFrame(
             self.window, width=590, height=350, corner_radius=10, fg_color=bg_fg_color)
@@ -107,6 +90,29 @@ class CountdownTimer:
                                bg_color=fg_color_clock, fg_color=fg_color_clock, command=self.create_timer)
         button.place(relx=0.5, rely=0.5, x=-20, y=55)
 
+    def countdown(self):
+        times = int(hrs.get())*3600 + int(mins.get())*60 + int(sec.get())
+
+        while times > -1:
+            minute, second = (times//60, times % 60)
+
+            hour = 0
+            if minute > 60:
+                hour, minute = (minute//60, minute % 60)
+            sec.set(second)
+            mins.set(minute)
+            hrs.set(hour)
+
+            self.window.update()
+            time.sleep(1)
+
+            if (times == 0):
+                playsound("./mp3/Loud_Alarm_Clock_Buzzer.mp3")
+                hrs.set("00")
+                mins.set("00")
+                sec.set("00")
+            times -= 1
+
     def create_timer(self):
         global hrs, mins, sec
         frame_display_alarm = ctk.CTkFrame(self.main_frame, width=580,
@@ -142,37 +148,11 @@ class CountdownTimer:
         sec = tk.StringVar()
         tk.Entry(self.main_frame, textvariable=sec, width=2, font=font_style_timer,
                  foreground=timer_color, borderwidth=10).place(relx=0.5, rely=0.5, x=-150, y=120)
-        sec.set("05")
+        sec.set("00")
 
         button = ctk.CTkButton(self.main_frame, text="Set Timer!", font=font_style_set_timer,
-                               text_color=timer_color, border_width=2, width=10)
+                               text_color=timer_color, border_width=2, width=10, command=self.countdown)
         button.place(relx=0.5, rely=0.5, x=60, y=75)
-        # button.bind("<Button-1>", self.create_timer)
-
-        # def create_timer(self):
-        times = int(hrs.get())*3600 + int(mins.get())*60 + int(sec.get())
-
-        while times > -1:
-            minute, second = (times//60, times % 60)
-
-            hour = 0
-            if minute > 60:
-                hour, minute = (minute//60, minute % 60)
-            sec.set(second)
-            mins.set(minute)
-            hrs.set(hour)
-
-            self.window.update()
-            time.sleep(1)
-
-            if (times == 0):
-                playsound("./mp3/Loud_Alarm_Clock_Buzzer.mp3")
-                hrs.set("00")
-                mins.set("00")
-                sec.set("00")
-            times -= 1
-
-        # return frame_display_alarm
 
     def run(self):
         self.window.mainloop()
