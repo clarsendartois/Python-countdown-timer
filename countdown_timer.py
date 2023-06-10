@@ -1,6 +1,5 @@
 import tkinter as tk
 import customtkinter as ctk
-from PIL import Image
 import time
 from playsound import playsound
 
@@ -12,7 +11,7 @@ font_style_text1_3 = ("Bookman Old Style", 60, "bold")
 font_style_text2_4 = ("Bookman Old Style", 30)
 font_style_timer = ("ds-digital", 80)
 font_style_set_timer = ("Bookman Old Style", 25, "bold")
-
+font_style_time_up = ("Bookman Old Style", 50, "bold")
 
 fg_color_clock = "#000000"
 bg_fg_color = "#2b2b2b"
@@ -99,9 +98,9 @@ class CountdownTimer:
             hour = 0
             if minute > 60:
                 hour, minute = (minute//60, minute % 60)
-            sec.set(second)
-            mins.set(minute)
-            hrs.set(hour)
+            sec.set(f"{second:02}")
+            mins.set(f"{minute:02}")
+            hrs.set(f"{hour:02}")
 
             self.window.update()
             time.sleep(1)
@@ -111,6 +110,10 @@ class CountdownTimer:
                 hrs.set("00")
                 mins.set("00")
                 sec.set("00")
+
+                time_up = tk.Label(self.main_frame,  text="Timer, Time's up!",
+                                   font=font_style_time_up, background=fg_color_clock, foreground=timer_color)
+                time_up.place(relx=0.5, rely=0.5, x=-320, y=250)
             times -= 1
 
     def create_timer(self):
